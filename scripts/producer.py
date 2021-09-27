@@ -3,25 +3,27 @@ from time import sleep
 from json import dumps
 from kafka import KafkaProducer
 
+
 def main():
     parser = argparse.ArgumentParser(description='Kafka producer client')
     parser.add_argument('-p', '--port', help='port for one of kafka brokers', required=True)
     args = parser.parse_args()
     port = args.port
 
-    #producer の設定
+    # producer の設定
     producer = KafkaProducer(
-        bootstrap_servers=['localhost:{}'.format(port)],#Kafka Broker ホスト
-        value_serializer=lambda x: dumps(x).encode('utf-8') #シリアライズ
+        bootstrap_servers=['localhost:{}'.format(port)],  # Kafka Broker ホスト
+        value_serializer=lambda x: dumps(x).encode('utf-8')  # シリアライズ
     )
 
-    #トピックにメッセージを送信
+    # トピックにメッセージを送信
     for j in range(1000):
         message = {'testProduceData': j}
         # Python ではライブラリがトピックを自動生成する
-        producer.send('topicPython', value=message)#トピック名と送信メッセージを指定
+        producer.send('topicPython', value=message)  # トピック名と送信メッセージを指定
         print(message)
         sleep(0.5)
+
 
 if __name__ == '__main__':
     main()
